@@ -1,0 +1,373 @@
+/* ============================================================
+   RESET & BASE
+============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: #ffffff; /* blanc premium */
+  color: #0f172a;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ============================================================
+   CONTAINER GLOBAL
+============================================================ */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ============================================================
+   HEADER BLEU MINUIT (GLOBAL)
+============================================================ */
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: #071739; /* bleu minuit */
+  padding: 14px 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* NAV */
+nav ul {
+  display: flex;
+  gap: 22px;
+}
+
+nav a {
+  color: #fff;
+  font-weight: 500;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+nav a:hover,
+nav a.active {
+  color: #60a5fa;
+}
+
+/* BUTTON HEADER */
+.btn {
+  background: #2563eb;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #1d4ed8;
+}
+
+/* ============================================================
+   HERO SECTION
+============================================================ */
+.hero {
+  padding-top: 120px;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.hero h1 span {
+  color: #2563eb;
+}
+
+.hero p {
+  margin-top: 10px;
+  color: #64748b;
+  max-width: 500px;
+}
+
+/* IMAGE HERO */
+.hero-img img {
+  border-radius: 20px;
+}
+
+/* ============================================================
+   BUTTONS SYSTEM
+============================================================ */
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-outline {
+  border: 2px solid #2563eb;
+  color: #2563eb;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.btn-outline:hover {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* ============================================================
+   SECTIONS GENERALES
+============================================================ */
+.section {
+  padding: 80px 0;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.section p {
+  text-align: center;
+  color: #64748b;
+}
+
+/* ============================================================
+   CARDS (SERVICES / ABOUT / PROJECTS)
+============================================================ */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 25px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: #2563eb;
+}
+
+.card i {
+  font-size: 24px;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+/* ============================================================
+   PROJECTS
+============================================================ */
+.project {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 20px;
+}
+
+.project:hover {
+  border-color: #2563eb;
+}
+
+/* ============================================================
+   FOOTER BLEU MINUIT
+============================================================ */
+footer {
+  text-align: center;
+  padding: 30px;
+  background: #071739;
+  color: #fff;
+  margin-top: 50px;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 768px) {
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  nav ul {
+    display: none;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+}
+
+
+
+
+/* ======================
+   ABOUT PAGE MODERNE
+====================== */
+
+body{
+  margin:0;
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top, #0b1020, #050508);
+  color:#fff;
+}
+
+/* TOPBAR */
+.topbar{
+  position:fixed;
+  top:0;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  padding:18px 40px;
+  background: rgba(10,10,20,0.6);
+  backdrop-filter: blur(15px);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.topbar .logo{
+  font-weight:bold;
+  color:#7c5cff;
+}
+
+.topbar nav a{
+  margin:0 12px;
+  color:#aaa;
+  text-decoration:none;
+  transition:.3s;
+}
+
+.topbar nav a:hover,
+.topbar nav a.active{
+  color:#fff;
+}
+
+/* HERO GLASS */
+.hero-about{
+  height:60vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding-top:80px;
+}
+
+.glass-card{
+  padding:40px;
+  border-radius:20px;
+  background: rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  text-align:center;
+  max-width:600px;
+  animation: fadeIn 1s ease;
+}
+
+.glass-card h1{
+  font-size:40px;
+  background: linear-gradient(90deg,#7c5cff,#00f5c4);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+/* GRID CARDS */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:20px;
+  padding:60px;
+}
+
+.card{
+  padding:30px;
+  border-radius:18px;
+  background: rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  transition:.3s;
+  text-align:center;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  background: rgba(124,92,255,0.1);
+}
+
+.card i{
+  font-size:30px;
+  color:#7c5cff;
+  margin-bottom:15px;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}

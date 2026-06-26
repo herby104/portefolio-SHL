@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>CV</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="../css/app.css">
+
+<style>
+:root{
+  --bg:#ffffff;
+  --soft:#f6f7fb;
+  --surface:rgba(255,255,255,.88);
+  --primary:#4f46e5;
+  --cyan:#06b6d4;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:rgba(15,23,42,.08);
+  --shadow:0 20px 60px rgba(15,23,42,.08);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top left, rgba(79,70,229,.08), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(6,182,212,.08), transparent 24%),
+    var(--soft);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+
+@keyframes fadeDown{
+  from{opacity:0; transform:translateY(-18px);}
+  to{opacity:1; transform:translateY(0);}
+}
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(22px);}
+  to{opacity:1; transform:translateY(0);}
+}
+@keyframes floaty{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+
+.wrapper{
+  max-width:1100px;
+  margin:0 auto;
+  padding:110px 20px 40px;
+  position:relative;
+}
+
+.wrapper::before{
+  content:"";
+  position:absolute;
+  width:320px;
+  height:320px;
+  border-radius:50%;
+  background:linear-gradient(135deg, rgba(79,70,229,.10), rgba(6,182,212,.06));
+  filter:blur(45px);
+  top:70px;
+  right:5%;
+  pointer-events:none;
+  animation:floaty 6s ease-in-out infinite;
+}
+
+.topbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  z-index:1000;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  animation:fadeDown .6s ease;
+}
+
+.topbar-inner{
+  width:min(1100px,100%);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 20px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  text-decoration:none;
+}
+
+.logo img{
+  display:block;
+  height:64px;
+  width:auto;
+  max-width:100%;
+  object-fit:contain;
+}
+
+nav ul{
+  list-style:none;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+nav a{
+  text-decoration:none;
+  color:var(--muted);
+  font-size:14px;
+  font-weight:600;
+  transition:.25s ease;
+  padding:8px 10px;
+  border-radius:10px;
+}
+
+nav a:hover,
+nav a.active{
+  color:var(--text);
+  background:rgba(79,70,229,.06);
+}
+
+.header-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  border-radius:24px;
+  padding:28px;
+  margin-bottom:22px;
+  backdrop-filter:blur(10px);
+  animation:fadeUp .8s ease;
+}
+
+.title{
+  text-align:center;
+  margin-bottom:18px;
+}
+.title span{
+  display:inline-block;
+  color:var(--primary);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.title h1{
+  font-size:clamp(34px, 5vw, 44px);
+  background:linear-gradient(90deg,var(--primary),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  max-width:760px;
+  margin:0 auto;
+  line-height:1.7;
+  font-size:15px;
+}
+
+.viewer{
+  margin-top:24px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  backdrop-filter:blur(10px);
+  animation:fadeUp .9s ease;
+}
+
+iframe{
+  width:100%;
+  height:100vh;
+  min-height:720px;
+  border:none;
+  display:block;
+  background:#fff;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  border:none;
+  padding:13px 20px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:14px;
+  transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  cursor:pointer;
+}
+
+.btn-primary{
+  background:linear-gradient(90deg,var(--primary),var(--cyan));
+  color:#fff;
+  box-shadow:0 14px 28px rgba(79,70,229,.18);
+}
+
+.btn-secondary{
+  background:#fff;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(0);}
+
+.meta{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-top:22px;
+}
+
+.meta .box{
+  padding:18px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:0 10px 26px rgba(15,23,42,.04);
+}
+
+.meta .box i{
+  color:var(--primary);
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+.meta .box h3{
+  font-size:15px;
+  margin-bottom:6px;
+}
+
+.meta .box p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+@media(max-width:900px){
+  .topbar-inner{
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .meta{
+    grid-template-columns:1fr;
+  }
+
+  .wrapper{
+    padding-top:150px;
+  }
+
+  iframe{
+    height:78vh;
+    min-height:560px;
+  }
+
+  .logo img{
+    height:52px;
+  }
+}
+
+@media(max-width:480px){
+  .logo img{
+    height:42px;
+  }
+
+  iframe{
+    height:72vh;
+    min-height:480px;
+  }
+
+  .actions .btn{
+    width:100%;
+    justify-content:center;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{
+    animation:none !important;
+    transition:none !important;
+    scroll-behavior:auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="../index.html" class="logo">
+      <img src="../images/shl.jpg" alt="Logo SH L">
+    </a>
+
+    <nav class="navbar">
+      <ul>
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="../pages/about.html">À propos</a></li>
+        <li><a href="../pages/services.html">Services</a></li>
+        <li><a href="../pages/projects.html">Projets</a></li>
+        <li><a href="../pages/skills.html">Compétences</a></li>
+        <li><a href="../pages/cv.html" class="active">CV</a></li>
+        <li><a href="../pages/contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="../cv/herby.pdf" class="btn btn-primary" download>
+        <i class="fa-solid fa-download"></i>
+        CV
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="wrapper">
+  <div class="header-card">
+    <div class="title">
+      <span>// cv</span>
+      <h1>Mon CV</h1>
+    </div>
+
+    <p class="subtitle">
+      Consultez mon parcours, mes expériences et mes compétences directement en ligne, puis téléchargez le document PDF si nécessaire.
+    </p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="../cv/herby.pdf" download>
+        <i class="fas fa-download"></i>
+        Télécharger le CV
+      </a>
+      <a class="btn btn-secondary" href="../cv/herby.pdf" target="_blank" rel="noopener">
+        <i class="fas fa-up-right-from-square"></i>
+        Ouvrir en plein écran
+      </a>
+    </div>
+
+    <div class="meta">
+      <div class="box">
+        <i class="fas fa-file-pdf"></i>
+        <h3>Format PDF</h3>
+        <p>Document prêt à être téléchargé ou consulté dans le navigateur.</p>
+      </div>
+      <div class="box">
+        <i class="fas fa-briefcase"></i>
+        <h3>Profil</h3>
+        <p>Développeur Full Stack orienté web, API et bases de données.</p>
+      </div>
+      <div class="box">
+        <i class="fas fa-shield-halved"></i>
+        <h3>Version propre</h3>
+        <p>Présentation simple, lisible et adaptée à un portfolio moderne.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer">
+    <iframe src="../cv/herby.pdf" title="CV PDF"></iframe>
+  </div>
+</div>
+
+</body>
+</html>

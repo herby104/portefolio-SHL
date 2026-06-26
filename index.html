@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaw-Herby LOUIS | Développeur Full Stack</title>
+<meta name="description" content="Portfolio professionnel de Shaw-Herby Louis - Développeur Full Stack, API REST, Réseaux et Bases de Données">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root{
+  --bg:#ffffff;
+  --bg2:#f6f7fb;
+  --surface:#f1f3f9;
+  --border:rgba(15,23,42,.08);
+  --primary:#4f46e5;
+  --primary-d:#3730a3;
+  --cyan:#06b6d4;
+  --text:#0f172a;
+  --muted:#64748b;
+  --font-disp:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+
+*,
+*::before,
+*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+img{max-width:100%;display:block}
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+#scroll-bar{
+  position:fixed;top:0;left:0;height:3px;width:0%;
+  background:linear-gradient(90deg,var(--primary),var(--cyan));z-index:1000;
+}
+.container{
+  max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:2;
+}
+section{position:relative;z-index:2}
+
+.header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  border-bottom:1px solid transparent;
+  transition:background .4s,backdrop-filter .4s,border-color .4s;
+}
+.header.scrolled{
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(16px);
+  border-color:var(--border);
+}
+.header .container{
+  display:flex;align-items:center;justify-content:space-between;
+  height:78px;gap:24px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  flex-shrink:0;
+}
+.logo img{
+  display:block;
+  height:54px;
+  width:auto;
+  max-width:100%;
+  object-fit:contain;
+}
+nav{flex:1;display:flex;justify-content:center}
+nav ul{display:flex;gap:4px;flex-wrap:wrap}
+nav ul li a{
+  font-size:.875rem;font-weight:500;padding:6px 14px;border-radius:8px;
+  color:var(--muted);transition:color .25s,background .25s,transform .25s;
+}
+nav ul li a:hover,
+nav ul li a.active{
+  color:var(--text);
+  background:var(--surface);
+  transform:translateY(-1px);
+}
+.header-actions{display:flex;align-items:center;gap:12px}
+.btn-primary,
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 22px;border-radius:100px;
+  font-size:.875rem;font-weight:600;font-family:var(--font-disp);
+  cursor:pointer;transition:transform .25s,box-shadow .25s,background .25s,border-color .25s;
+}
+.btn-primary{
+  border:none;background:linear-gradient(135deg,var(--primary),#8f88ff);color:#fff;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(108,99,255,.35);
+}
+.btn-secondary{
+  background:transparent;color:var(--text);border:1px solid var(--border);
+}
+.btn-secondary:hover{
+  transform:translateY(-2px);
+  border-color:var(--primary);
+  background:rgba(108,99,255,.08);
+}
+#menu-btn{
+  display:none;background:var(--surface);border:1px solid var(--border);color:var(--text);
+  width:40px;height:40px;border-radius:10px;font-size:1rem;cursor:pointer;
+  align-items:center;justify-content:center;
+}
+
+.hero{
+  min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+  width:900px;height:700px;background:radial-gradient(ellipse at center, rgba(108,99,255,.15) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-grid{
+  display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.25);
+  padding:6px 16px;border-radius:100px;
+  font-family:var(--font-mono);font-size:.78rem;color:var(--cyan);margin-bottom:28px;
+}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulseAnim 1.8s ease-in-out infinite}
+@keyframes pulseAnim{
+  0%,100%{box-shadow:0 0 0 0 rgba(6,182,212,.6)}
+  50%{box-shadow:0 0 0 8px rgba(6,182,212,0)}
+}
+.hero h1{
+  font-family:var(--font-disp);font-size:clamp(2.6rem,5.5vw,4.2rem);font-weight:700;
+  line-height:1.08;letter-spacing:-.03em;margin-bottom:16px;
+}
+.hero h1 span{
+  background:linear-gradient(135deg,var(--primary),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.terminal-line{
+  font-family:var(--font-mono);font-size:1.05rem;color:var(--cyan);margin-bottom:20px;min-height:1.6em;
+}
+.cursor{
+  display:inline-block;width:2px;height:1.1em;background:var(--cyan);margin-left:2px;vertical-align:middle;
+  animation:blink .9s step-end infinite;
+}
+@keyframes blink{50%{opacity:0}}
+.hero p{
+  font-size:1.05rem;color:var(--muted);max-width:460px;margin-bottom:36px;
+}
+.hero-buttons{display:flex;gap:14px;flex-wrap:wrap}
+.hero-socials{display:flex;gap:12px;margin-top:36px}
+.hero-socials a{
+  width:42px;height:42px;border-radius:12px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;color:var(--muted);
+  transition:color .25s,border-color .25s,background .25s,transform .25s,box-shadow .25s;
+}
+.hero-socials a:hover{
+  color:var(--primary);
+  border-color:var(--primary);
+  background:rgba(108,99,255,.08);
+  transform:translateY(-3px) scale(1.04);
+  box-shadow:0 10px 24px rgba(79,70,229,.12);
+}
+.hero-image{
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.profile-card{
+  position:relative;width:340px;height:420px;border-radius:32px;overflow:hidden;border:1px solid var(--border);background:var(--bg);
+}
+.profile-card img{
+  width:100%;height:100%;object-fit:cover;object-position:top;
+}
+.profile-card::before{
+  content:'';position:absolute;inset:-2px;border-radius:34px;background:linear-gradient(135deg,var(--primary),var(--cyan),var(--primary));z-index:-1;
+}
+.float-badge{
+  position:absolute;display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:14px;
+  background:rgba(255,255,255,.88);border:1px solid var(--border);backdrop-filter:blur(12px);
+  font-family:var(--font-mono);font-size:.78rem;color:var(--text);white-space:nowrap;
+}
+.float-badge i{color:var(--primary);font-size:.9rem}
+.float-badge.b1{top:40px;right:-50px}
+.float-badge.b2{bottom:80px;left:-60px}
+.float-badge.b3{top:50%;right:-55px}
+
+.stats{
+  padding:60px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);
+}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.section{padding:100px 0}
+.section.dark{background:var(--bg2)}
+.section-title{text-align:center;margin-bottom:60px}
+.section-title span{
+  font-family:var(--font-mono);font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--primary);
+  display:block;margin-bottom:12px;
+}
+.section-title h2{
+  font-family:var(--font-disp);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;letter-spacing:-.03em;
+}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card,
+.stat-card,
+.project-card{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .6s ease,transform .6s ease,border-color .3s,background .3s;
+}
+.card.visible,
+.stat-card.visible,
+.project-card.visible{opacity:1;transform:translateY(0)}
+.card{
+  padding:36px 28px;border-radius:20px;background:var(--bg);border:1px solid var(--border);
+}
+.card:hover{
+  border-color:var(--primary);
+  background:linear-gradient(135deg,rgba(79,70,229,.06),rgba(6,182,212,.04));
+  transform:translateY(-6px);
+}
+.card i{font-size:1.6rem;color:var(--primary);margin-bottom:20px;display:block}
+.card h3{
+  font-family:var(--font-disp);font-size:1.1rem;font-weight:600;margin-bottom:10px;
+}
+.card p{font-size:.9rem;color:var(--muted)}
+
+.skills-strip{
+  padding:48px 0;overflow:hidden;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.skills-track{
+  display:flex;gap:32px;animation:marquee 22s linear infinite;width:max-content;
+}
+.skill-pill{
+  display:flex;align-items:center;gap:10px;padding:10px 22px;border-radius:100px;border:1px solid var(--border);
+  background:var(--bg2);font-family:var(--font-mono);font-size:.82rem;color:var(--muted);white-space:nowrap;
+}
+.skill-pill i{color:var(--primary)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+.project-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.project-card{
+  border-radius:20px;background:var(--bg);border:1px solid var(--border);overflow:hidden;
+}
+.project-card:hover{
+  border-color:var(--primary);transform:translateY(-6px);
+}
+.project-thumb{
+  height:180px;display:flex;align-items:center;justify-content:center;font-size:3rem;
+}
+.pt1{background:linear-gradient(135deg,#1a1040,#2d1b69)}
+.pt2{background:linear-gradient(135deg,#001a14,#003d2e)}
+.pt3{background:linear-gradient(135deg,#1a0010,#3d0028)}
+.project-body{padding:24px 28px}
+.project-tag{
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;display:block;
+}
+.project-body h3{
+  font-family:var(--font-disp);font-size:1.05rem;font-weight:600;margin-bottom:8px;
+}
+.project-body p{
+  font-size:.875rem;color:var(--muted);margin-bottom:20px;
+}
+.project-links{display:flex;gap:12px}
+.project-links a{
+  font-size:.8rem;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:6px;
+}
+.project-links a:hover{color:var(--primary)}
+
+.cta{
+  padding:100px 0;text-align:center;
+}
+.cta-inner{max-width:600px;margin:0 auto}
+.cta h2{
+  font-family:var(--font-disp);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;letter-spacing:-.03em;margin-bottom:16px;
+}
+.cta h2 span{
+  background:linear-gradient(135deg,var(--primary),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cta p{color:var(--muted);margin-bottom:32px;font-size:1.05rem}
+.cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+footer{
+  background:
+    linear-gradient(135deg, rgba(79,70,229,.18), rgba(6,182,212,.08)),
+    rgba(10,12,25,.82);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:56px 0 28px;
+  position:relative;
+  overflow:hidden;
+}
+footer::before{
+  content:'';
+  position:absolute;
+  inset:-120px -100px auto auto;
+  width:320px;
+  height:320px;
+  background:radial-gradient(circle, rgba(255,255,255,.12), transparent 70%);
+  pointer-events:none;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:32px;
+  margin-bottom:36px;
+}
+.footer-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:24px;
+  backdrop-filter:blur(10px);
+}
+footer h3{
+  font-family:var(--font-disp);
+  font-size:1.15rem;
+  font-weight:700;
+  background:linear-gradient(135deg,var(--primary),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:10px;
+}
+footer h4{
+  font-family:var(--font-disp);
+  font-size:.95rem;
+  font-weight:600;
+  color:#f8fafc;
+  margin-bottom:14px;
+}
+footer p{
+  color:#cbd5e1;
+  font-size:.92rem;
+}
+footer ul li+li{margin-top:10px}
+footer ul li a{
+  font-size:.9rem;
+  color:#cbd5e1;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 0;
+  transition:color .25s,transform .25s,letter-spacing .25s,text-shadow .25s;
+}
+footer ul li a:hover{
+  color:#ffffff;
+  transform:translateX(6px);
+  text-shadow:0 0 14px rgba(255,255,255,.12);
+  letter-spacing:.01em;
+}
+.footer-links a i{
+  color:var(--cyan);
+  width:18px;
+  text-align:center;
+}
+.socials{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.socials a{
+  width:42px;height:42px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;
+  color:#cbd5e1;font-size:.95rem;
+  background:rgba(255,255,255,.03);
+  transition:transform .25s, border-color .25s, color .25s, background .25s, box-shadow .25s;
+}
+.socials a:hover{
+  color:#fff;border-color:var(--primary);
+  background:rgba(79,70,229,.18);
+  transform:translateY(-3px) scale(1.05);
+  box-shadow:0 10px 22px rgba(79,70,229,.16);
+}
+.footer-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.08);
+  color:#94a3b8;
+  font-family:var(--font-mono);
+  font-size:.78rem;
+}
+.back-top{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  color:#e2e8f0;
+  background:rgba(255,255,255,.03);
+  transition:transform .25s, background .25s, border-color .25s, color .25s;
+}
+.back-top:hover{
+  transform:translateY(-2px);
+  border-color:var(--cyan);
+  color:#fff;
+  background:rgba(6,182,212,.12);
+}
+
+.mobile-nav{
+  display:none;position:fixed;inset:0;z-index:99;background:rgba(5,5,8,.97);
+  backdrop-filter:blur(16px);flex-direction:column;align-items:center;justify-content:center;gap:28px;
+}
+.mobile-nav.open{display:flex}
+.mobile-nav ul li a{
+  font-family:var(--font-disp);font-size:1.5rem;font-weight:600;color:var(--muted);
+}
+#close-nav{
+  position:absolute;top:24px;right:24px;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);width:44px;height:44px;border-radius:12px;font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.reveal{opacity:0;transform:translateY(24px)}
+.reveal.visible{opacity:1;transform:translateY(0);transition:opacity .6s ease,transform .6s ease}
+
+@media (max-width:960px){
+  nav{display:none}
+  #menu-btn{display:flex}
+  .hero-grid{grid-template-columns:1fr;text-align:center}
+  .hero p{margin:0 auto 36px}
+  .hero-buttons,.hero-socials{justify-content:center}
+  .hero-image{order:-1}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .cards-grid,.project-grid,.footer-grid{grid-template-columns:1fr}
+  .float-badge.b1,.float-badge.b3{right:0}
+  .float-badge.b2{left:0}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .logo img{height:46px}
+}
+@media (max-width:480px){
+  .stats-grid{grid-template-columns:1fr}
+  .profile-card{width:280px;height:360px}
+  .btn-primary,.btn-secondary{width:100%;justify-content:center}
+  .copyright{opacity:.7;font-size:.72rem}
+  .footer-card{padding:20px}
+  .footer-bottom{font-size:.72rem}
+  .logo img{height:40px}
+}
+</style>
+</head>
+<body>
+
+<div id="top"></div>
+<div id="scroll-bar"></div>
+<canvas id="bg-canvas"></canvas>
+
+<nav class="mobile-nav" id="mobile-nav">
+  <button id="close-nav"><i class="fa-solid fa-xmark"></i></button>
+  <ul>
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="pages/about.html">À propos</a></li>
+    <li><a href="pages/services.html">Services</a></li>
+    <li><a href="pages/projects.html">Projets</a></li>
+    <li><a href="pages/skills.html">Compétences</a></li>
+    <li><a href="pages/cv.html">CV</a></li>
+    <li><a href="pages/contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="header" id="header">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <img src="images/shl.jpg" alt="Logo SH L">
+    </a>
+    <nav class="navbar">
+      <ul>
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="pages/about.html">À propos</a></li>
+        <li><a href="pages/services.html">Services</a></li>
+        <li><a href="pages/projects.html">Projets</a></li>
+        <li><a href="pages/skills.html">Compétences</a></li>
+        <li><a href="pages/cv.html">CV</a></li>
+        <li><a href="pages/contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="cv/herby.pdf" class="btn-primary"><i class="fa-solid fa-download"></i> CV</a>
+      <button id="menu-btn"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-content">
+      <div class="badge reveal"><span class="pulse"></span> Disponible pour freelance &amp; emploi</div>
+      <h1 class="reveal">Shaw-Herby <span>LOUIS</span></h1>
+      <div class="terminal-line reveal"><span id="typed-text"></span><span class="cursor"></span></div>
+      <p class="reveal">Développeur Web & Technicien Support IT polyvalent, je suis spécialisé dans la conception d'applications robustes (PHP, API REST, Postman) et la gestion de bases de données (Oracle 19c, MySQL). J'assure le support technique ainsi que le déploiement et la maintenance de sites web professionnels (WordPress, cPanel). En parallèle, j'administre des infrastructures réseau, notamment à travers la configuration d'environnements Windows Server et le déploiement de systèmes Linux via VirtualBox.</p>
+      <div class="hero-buttons reveal">
+        <a href="pages/projects.html" class="btn-primary"><i class="fa-solid fa-rocket"></i> Voir mes projets</a>
+        <a href="pages/contact.html" class="btn-secondary">Me contacter <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="hero-socials reveal">
+        <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="mailto:shaw@example.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+
+    <div class="hero-image reveal">
+      <div class="profile-card">
+        <img src="images/profile.png" alt="Shaw-Herby Louis" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(120deg,#12121f,#1a1a2e)'">
+      </div>
+      <div class="float-badge b1"><i class="fab fa-php"></i> PHP / Laravel</div>
+      <div class="float-badge b2"><i class="fas fa-database"></i> MySQL · Oracle</div>
+      <div class="float-badge b3"><i class="fas fa-network-wired"></i> Réseaux</div>
+    </div>
+  </div>
+</section>
+
+<section class="stats reveal">
+  <div class="container stats-grid">
+    <div class="stat-card reveal"><h3 class="counter" data-target="3">0<span class="stat-suffix">+</span></h3><p>Projets personnels réalisés</p></div>
+    <div class="stat-card reveal"><h3 class="counter" data-target="1">0<span class="stat-suffix">+</span></h3><p>Années d'expérience</p></div>
+    <div class="stat-card reveal"><h3 class="counter" data-target="11">0<span class="stat-suffix">+</span></h3><p>Technologies & Outils</p></div>
+    <div class="stat-card reveal"><h3 class="counter" data-target="100">0<span class="stat-suffix">%</span></h3><p>Satisfaction client/Assistance technique support IT</p></div>
+  </div>
+</section>
+
+<div class="skills-strip reveal">
+  <div class="skills-track">
+    <span class="skill-pill"><i class="fab fa-html5"></i> HTML5</span>
+    <span class="skill-pill"><i class="fab fa-css3-alt"></i> CSS3</span>
+    <span class="skill-pill"><i class="fab fa-js"></i> JavaScript</span>
+    <span class="skill-pill"><i class="fab fa-php"></i> PHP</span>
+    <span class="skill-pill"><i class="fas fa-leaf"></i> Laravel</span>
+    <span class="skill-pill"><i class="fas fa-database"></i> MySQL</span>
+    <span class="skill-pill"><i class="fas fa-database"></i> Oracle</span>
+    <span class="skill-pill"><i class="fas fa-network-wired"></i> Réseaux</span>
+    <span class="skill-pill"><i class="fab fa-git-alt"></i> Git</span>
+    <span class="skill-pill"><i class="fab fa-linux"></i> Linux</span>
+    <span class="skill-pill"><i class="fas fa-code"></i> API REST</span>
+    <span class="skill-pill"><i class="fab fa-java"></i> java</span>
+    <span class="skill-pill"><i class="fab fa-html5"></i> HTML5</span>
+    <span class="skill-pill"><i class="fab fa-css3-alt"></i> CSS3</span>
+    <span class="skill-pill"><i class="fab fa-js"></i> JavaScript</span>
+    <span class="skill-pill"><i class="fab fa-php"></i> PHP</span>
+    <span class="skill-pill"><i class="fas fa-leaf"></i> Laravel</span>
+    <span class="skill-pill"><i class="fas fa-database"></i> MySQL</span>
+    <span class="skill-pill"><i class="fas fa-database"></i> Oracle</span>
+    <span class="skill-pill"><i class="fas fa-network-wired"></i> Réseaux</span>
+    <span class="skill-pill"><i class="fab fa-git-alt"></i> Git</span>
+    <span class="skill-pill"><i class="fab fa-linux"></i> Linux</span>
+    <span class="skill-pill"><i class="fas fa-code"></i> API REST</span>
+    <span class="skill-pill"><i class="fab fa-wordpress"></i> Wordpress</span>
+  </div>
+</div>
+
+<section class="section reveal" id="about">
+  <div class="container">
+    <div class="section-title"><span>// présentation</span><h2>Pourquoi travailler avec moi ?</h2></div>
+    <div class="cards-grid">
+      <div class="card reveal"><i class="fas fa-code"></i><h3>Développement Web</h3><p>Conception de sites web modernes, rapides, sécurisés et responsive, basés sur des architectures de code propres, optimisées et maintenables..</p></div>
+      <div class="card reveal"><i class="fas fa-server"></i><h3>API REST</h3><p>Développement d’API REST performantes et évolutives avec PHP / Laravel, intégrant des standards de sécurité et une documentation technique complète.</p></div>
+      <div class="card reveal"><i class="fas fa-network-wired"></i><h3>Réseaux & IT</h3><p>upport technique aux utilisateurs (helpdesk), incluant l’installation et la configuration de systèmes Windows, le déploiement d’applications (Microsoft Office et logiciels métiers), ainsi que la configuration d’imprimantes et périphériques</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section dark reveal" id="services">
+  <div class="container">
+    <div class="section-title"><span>// services</span><h2>Ce que je propose</h2></div>
+    <div class="cards-grid">
+      <div class="card reveal"><i class="fas fa-globe"></i><h3>Sites Web Premium</h3><p>Design UI/UX moderne, performances optimisées, SEO et accessibilité intégrés.</p></div>
+      <div class="card reveal"><i class="fas fa-laptop-code"></i><h3>Applications Web</h3><p>Applications métier sur mesure, tableaux de bord, gestion de données complexes.</p></div>
+      <div class="card reveal"><i class="fas fa-database"></i><h3>Bases de données</h3><p>Modélisation, optimisation de requêtes et sécurité — MySQL &amp; Oracle.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="projects">
+  <div class="container">
+    <div class="section-title"><span>// portfolio</span><h2>Projets récents</h2></div>
+    <div class="project-grid">
+      <div class="project-card reveal">
+        <div class="project-thumb pt1">🎨</div>
+        <div class="project-body">
+          <span class="project-tag">HTML · CSS · JS</span>
+          <h3>Portfolio Professionnel</h3>
+          <p>Site personnel ultra-moderne avec animations avancées, design responsive et identité visuelle unique.</p>
+          <div class="project-links"><a href="https://herbypulsedev.gt.tc/?i=1">Visiter mon site</a><i class="fas fa-external-link-alt"></i> Live</a><a href="#"><i class="fab fa-github"></i> Code</a></div>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb pt2">⚡</div>
+        <div class="project-body">
+          <span class="project-tag">PHP · Oracle · REST</span>
+          <h3>API REST Oracle</h3>
+          <p>Conception et implémentation d’une API REST avec opérations CRUD sur Oracle Database, incluant authentification, gestion centralisée des erreurs et documentation technique complète..</p>
+          <div class="project-links"><a href="#"><i class="fas fa-external-link-alt"></i> Demo</a><a href="#"><i class="fab fa-github"></i> Code</a></div>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb pt3">🗂️</div>
+        <div class="project-body">
+          <span class="project-tag">PHP · MySQL · Laravel</span>
+          <h3>Gestion Clients</h3>
+          <p>Application complète de gestion CRM avec rôles utilisateurs, tableaux de bord et exports PDF.</p>
+          <div class="project-links"><a href="#"><i class="fas fa-external-link-alt"></i> Demo</a><a href="#"><i class="fab fa-github"></i> Code</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta reveal">
+  <div class="container">
+    <div class="cta-inner">
+      <h2>Construisons quelque chose <span>d'extraordinaire</span></h2>
+      <p>Disponible pour stage, emploi et missions freelance dès maintenant.</p>
+      <div class="cta-buttons">
+        <a href="pages/contact.html" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Discutons ensemble</a>
+        <a href="cv/herby.pdf" class="btn-secondary"><i class="fa-solid fa-download"></i> Télécharger mon CV</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-card">
+        <h3>Shaw-Herby Louis</h3>
+        <p>Développeur Full Stack & Base de données &amp; Technicien IT — Haïti 🇭🇹</p>
+      </div>
+      <div class="footer-card">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html"><i class="fa-solid fa-house"></i> Accueil</a></li>
+          <li><a href="pages/about.html"><i class="fa-solid fa-user"></i> À propos</a></li>
+          <li><a href="pages/projects.html"><i class="fa-solid fa-diagram-project"></i> Projets</a></li>
+          <li><a href="pages/contact.html"><i class="fa-solid fa-paper-plane"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-card">
+        <h4>Réseaux</h4>
+        <div class="socials">
+          <a href="https://github.com" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.facebook.com" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="mailto:shawherbylouis104@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="copyright">© 2026 Shaw-Herby Louis — Tous droits réservés.</div>
+      <a href="#top" class="back-top" id="back-top"><i class="fa-solid fa-arrow-up"></i> Retour en haut</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+
+  for(let i=0;i<80;i++){
+    particles.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.3,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,a:Math.random()*.5+.1});
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach((p,i)=>{
+      for(let j=i+1;j<particles.length;j++){
+        const q = particles[j], dx = p.x-q.x, dy = p.y-q.y, dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist < 130){
+          ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle = `rgba(79,70,229,${(1-dist/130)*.12})`; ctx.lineWidth = .6; ctx.stroke();
+        }
+      }
+    });
+    particles.forEach(p=>{
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(79,70,229,${p.a})`; ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0) p.x = W;
+      if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H;
+      if(p.y > H) p.y = 0;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  const header = document.getElementById('header');
+  const scrollBar = document.getElementById('scroll-bar');
+  addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', scrollY > 20);
+    const pct = scrollY / (document.body.scrollHeight - innerHeight) * 100;
+    scrollBar.style.width = pct + '%';
+  });
+
+  const mobileNav = document.getElementById('mobile-nav');
+  document.getElementById('menu-btn').addEventListener('click', () => mobileNav.classList.add('open'));
+  document.getElementById('close-nav').addEventListener('click', () => mobileNav.classList.remove('open'));
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
+
+  const phrases = ['Développeur web Full Stack','API & Backend','Technicien Support IT/Réseau','Passionné de programmation et de bases de données'];
+  let pi = 0, ci = 0, deleting = false;
+  const typed = document.getElementById('typed-text');
+
+  function typeStep(){
+    const phrase = phrases[pi];
+    if(!deleting){
+      typed.textContent = phrase.slice(0, ++ci);
+      if(ci === phrase.length){ deleting = true; setTimeout(typeStep, 1600); return; }
+    }else{
+      typed.textContent = phrase.slice(0, --ci);
+      if(ci === 0){ deleting = false; pi = (pi + 1) % phrases.length; }
+    }
+    setTimeout(typeStep, deleting ? 45 : 85);
+  }
+  setTimeout(typeStep, 1200);
+
+  const revealObs = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold:.12, rootMargin:'0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .card, .stat-card, .project-card').forEach(el => revealObs.observe(el));
+
+  const counterObs = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = +el.dataset.target;
+      let current = 0;
+      const step = Math.max(1, Math.ceil(target / 50));
+      const interval = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.childNodes[0].textContent = current;
+        if(current >= target) clearInterval(interval);
+      }, 35);
+      obs.unobserve(el);
+    });
+  }, { threshold:.5 });
+
+  document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+});
+</script>
+
+</body>
+</html>

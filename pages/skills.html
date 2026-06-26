@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compétences</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root{
+  --bg:#ffffff;
+  --bg2:#f6f7fb;
+  --surface:rgba(255,255,255,.88);
+  --primary:#4f46e5;
+  --cyan:#06b6d4;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:rgba(15,23,42,.08);
+  --shadow:0 20px 60px rgba(15,23,42,.08);
+  --font-disp:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+
+*,
+*::before,
+*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at top left, rgba(79,70,229,.08), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(6,182,212,.08), transparent 24%),
+    var(--bg2);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+img{max-width:100%;display:block}
+
+.container{
+  max-width:1160px;
+  margin:0 auto;
+  padding:0 24px;
+}
+
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  border-bottom:1px solid transparent;
+  transition:background .4s,backdrop-filter .4s,border-color .4s;
+}
+.header.scrolled{
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(16px);
+  border-color:var(--border);
+}
+.header .container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:78px;
+  gap:24px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  flex-shrink:0;
+}
+.logo img{
+  display:block;
+  height:54px;
+  width:auto;
+  max-width:100%;
+  object-fit:contain;
+}
+
+nav{
+  flex:1;
+  display:flex;
+  justify-content:center;
+}
+nav ul{
+  display:flex;
+  gap:4px;
+  flex-wrap:wrap;
+}
+nav ul li a{
+  font-size:.875rem;
+  font-weight:500;
+  padding:6px 14px;
+  border-radius:8px;
+  color:var(--muted);
+  transition:color .25s,background .25s,transform .25s;
+}
+nav ul li a:hover,
+nav ul li a.active{
+  color:var(--text);
+  background:var(--bg2);
+  transform:translateY(-1px);
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.btn-primary,
+.btn-secondary{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 22px;
+  border-radius:100px;
+  font-size:.875rem;
+  font-weight:600;
+  font-family:var(--font-disp);
+  cursor:pointer;
+  transition:transform .25s,box-shadow .25s,background .25s,border-color .25s;
+}
+.btn-primary{
+  border:none;
+  background:linear-gradient(135deg,var(--primary),#8f88ff);
+  color:#fff;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(108,99,255,.35);
+}
+.btn-secondary{
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover{
+  transform:translateY(-2px);
+  border-color:var(--primary);
+  background:rgba(108,99,255,.08);
+}
+
+#menu-btn{
+  display:none;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  color:var(--text);
+  width:40px;
+  height:40px;
+  border-radius:10px;
+  font-size:1rem;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+}
+
+.mobile-nav{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99;
+  background:rgba(5,5,8,.97);
+  backdrop-filter:blur(16px);
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+}
+.mobile-nav.open{display:flex}
+.mobile-nav ul li a{
+  font-family:var(--font-disp);
+  font-size:1.5rem;
+  font-weight:600;
+  color:var(--muted);
+}
+#close-nav{
+  position:absolute;
+  top:24px;
+  right:24px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  color:var(--text);
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  font-size:1.1rem;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.section{
+  padding:120px 20px 70px;
+  position:relative;
+}
+.section::before{
+  content:"";
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  background:linear-gradient(135deg, rgba(79,70,229,.10), rgba(6,182,212,.06));
+  filter:blur(45px);
+  top:70px;
+  right:8%;
+  animation:floaty 6s ease-in-out infinite;
+  pointer-events:none;
+}
+.section .container{
+  display:block;
+  padding:0;
+}
+
+@keyframes fadeDown{
+  from{opacity:0; transform:translateY(-18px);}
+  to{opacity:1; transform:translateY(0);}
+}
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(24px);}
+  to{opacity:1; transform:translateY(0);}
+}
+@keyframes floaty{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:34px;
+}
+.section-title span{
+  display:inline-block;
+  color:var(--primary);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.section-title h2{
+  font-family:var(--font-disp);
+  font-size:clamp(30px, 5vw, 44px);
+  background:linear-gradient(90deg,var(--primary),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.section-title p{
+  color:var(--muted);
+  max-width:720px;
+  margin:12px auto 0;
+  line-height:1.7;
+  font-size:15px;
+}
+
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  margin-top:34px;
+}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  padding:28px;
+  text-align:left;
+  transition:transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s ease, border-color .35s ease;
+  opacity:0;
+  transform:translateY(18px);
+  backdrop-filter:blur(10px);
+}
+.card.visible{
+  opacity:1;
+  transform:translateY(0);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.card:hover{
+  transform:translateY(-10px);
+  border-color:rgba(79,70,229,.2);
+  box-shadow:0 24px 60px rgba(79,70,229,.12);
+}
+.card i{
+  font-size:30px;
+  color:var(--primary);
+  margin-bottom:16px;
+  display:inline-block;
+}
+.card:hover i{
+  color:var(--cyan);
+}
+.card h3{
+  font-family:var(--font-disp);
+  font-size:18px;
+  margin-bottom:8px;
+}
+.card p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+
+.skills-bars{
+  margin-top:28px;
+  display:grid;
+  gap:16px;
+}
+.skill-item{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+}
+.skill-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+  gap:10px;
+}
+.skill-name{
+  font-weight:700;
+  color:var(--text);
+  font-size:14px;
+}
+.skill-value{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:600;
+}
+.bar{
+  width:100%;
+  height:12px;
+  background:rgba(15,23,42,.06);
+  border-radius:999px;
+  overflow:hidden;
+  position:relative;
+}
+.fill{
+  height:100%;
+  width:0;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--primary),var(--cyan));
+  box-shadow:0 8px 18px rgba(79,70,229,.18);
+  transition:width 1.4s cubic-bezier(.2,.9,.2,1);
+}
+.skill-item.visible .fill{
+  width:var(--level);
+}
+
+.detail{
+  margin-top:34px;
+  padding:24px;
+  border-radius:20px;
+  background:rgba(255,255,255,.72);
+  border:1px solid var(--border);
+  box-shadow:0 10px 30px rgba(15,23,42,.05);
+}
+.detail h3{
+  font-family:var(--font-disp);
+  margin-bottom:14px;
+  font-size:20px;
+}
+.detail p{
+  color:var(--muted);
+  line-height:1.8;
+  font-size:15px;
+}
+
+@media(max-width:960px){
+  nav{display:none}
+  #menu-btn{display:flex}
+  .header .container{justify-content:space-between}
+  .cards-grid{
+    grid-template-columns:1fr;
+  }
+  .section{
+    padding-top:110px;
+  }
+  .logo img{
+    height:46px;
+  }
+}
+
+@media(max-width:480px){
+  .section,.container{
+    padding-left:18px;
+    padding-right:18px;
+  }
+  .logo img{
+    height:40px;
+  }
+  .header-actions .btn-primary{
+    display:none;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{
+    animation:none !important;
+    transition:none !important;
+    scroll-behavior:auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="mobile-nav" id="mobile-nav">
+  <button id="close-nav"><i class="fa-solid fa-xmark"></i></button>
+  <ul>
+    <li><a href="../index.html">Accueil</a></li>
+    <li><a href="about.html">À propos</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="projects.html">Projets</a></li>
+    <li><a href="skills.html">Compétences</a></li>
+    <li><a href="cv.html">CV</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="header" id="header">
+  <div class="container">
+    <a href="../index.html" class="logo">
+      <img src="../images/shl.jpg" alt="Logo SH L">
+    </a>
+
+    <nav class="navbar">
+      <ul>
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="about.html">À propos</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="projects.html">Projets</a></li>
+        <li><a href="skills.html" class="active">Compétences</a></li>
+        <li><a href="cv.html">CV</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="../cv/herby.pdf" class="btn-primary"><i class="fa-solid fa-download"></i> CV</a>
+      <button id="menu-btn"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <span>// skills</span>
+      <h2>Mes compétences</h2>
+      <p>Au fil de mon parcours et de mes certifications, j’ai développé un profil polyvalent axé sur l’efficacité et la fiabilité.
+Voici un aperçu des technologies et outils que j’exploite et que je déploie au quotidien pour mener à bien mes projets..
+</p>.</p>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <i class="fab fa-html5"></i>
+        <h3>Frontend</h3>
+        <p>HTML, CSS, JavaScript</p>
+
+        <div class="skills-bars">
+          <div class="skill-item" style="--level: 92%;">
+            <div class="skill-head">
+              <span class="skill-name">HTML / CSS</span>
+              <span class="skill-value">92%</span>
+            </div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+
+          <div class="skill-item" style="--level: 78%;">
+            <div class="skill-head">
+              <span class="skill-name">JavaScript</span>
+              <span class="skill-value">78%</span>
+            </div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <i class="fas fa-server"></i>
+        <h3>Backend</h3>
+        <p>PHP, Laravel, API REST</p>
+
+        <div class="skills-bars">
+          <div class="skill-item" style="--level: 84%;">
+            <div class="skill-head">
+              <span class="skill-name">PHP / Laravel</span>
+              <span class="skill-value">84%</span>
+            </div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+
+          <div class="skill-item" style="--level: 80%;">
+            <div class="skill-head">
+              <span class="skill-name">API REST</span>
+              <span class="skill-value">80%</span>
+            </div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <i class="fas fa-database"></i>
+        <h3>Base de données</h3>
+        <p>MySQL, Oracle</p>
+
+        <div class="skills-bars">
+          <div class="skill-item" style="--level: 88%;">
+            <div class="skill-head">
+              <span class="skill-name">MySQL</span>
+              <span class="skill-value">88%</span>
+            </div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+
+          <div class="skill-item" style="--level: 74%;">
+            <div class="skill-head">
+              <span class="skill-name">Oracle</span>
+              <span class="skill-value">74%</span>
+            </div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail">
+      <h3>Approche technique</h3>
+      <p>
+        Je privilégie des solutions logicielles propres, maintenables et performantes, en m’appuyant sur des principes d’architecture reconnus tels que MERISE pour la modélisation des bases de données, la Programmation Orientée Objet (POO) pour la structuration du code, ainsi que l’architecture MVC pour une séparation claire des responsabilités. J’applique également les principes SOLID et les bonnes pratiques de Clean Code afin d’assurer la lisibilité, la maintenabilité et l’évolutivité des applications.
+
+        Par ailleurs, je conçois des API REST structurées et cohérentes, tout en respectant les standards de sécurité et d’organisation des systèmes. J’accorde une attention particulière à la performance, à la sécurité et à la scalabilité des applications, ainsi qu’à la normalisation des bases de données pour garantir l’intégrité des données.
+
+        Enfin, je combine ces approches avec une forte sensibilité à l’ergonomie et à l’expérience utilisateur, afin de développer des interfaces modernes, intuitives et efficaces, reposant sur une base backend solide et bien structurée.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const mobileNav = document.getElementById("mobile-nav");
+  document.getElementById("menu-btn").addEventListener("click", () => mobileNav.classList.add("open"));
+  document.getElementById("close-nav").addEventListener("click", () => mobileNav.classList.remove("open"));
+  mobileNav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileNav.classList.remove("open")));
+
+  const header = document.getElementById("header");
+  window.addEventListener("scroll", () => {
+    header.classList.toggle("scrolled", window.scrollY > 20);
+  });
+
+  const cards = document.querySelectorAll(".card");
+  const skills = document.querySelectorAll(".skill-item");
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.18 });
+
+  cards.forEach(card => observer.observe(card));
+  skills.forEach(skill => observer.observe(skill));
+});
+</script>
+
+</body>
+</html>
