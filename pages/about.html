@@ -410,6 +410,194 @@ nav ul li a.active{
     scroll-behavior:auto !important;
   }
 }
+.timeline-section {
+    padding: 100px 20px;
+    background: #ffffff;
+}
+
+
+.section-header {
+    text-align: center;
+    max-width: 750px;
+    margin: auto;
+}
+
+
+.section-header span {
+    color: #d4af37;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+
+.section-header h2 {
+    font-size: 42px;
+    color: #0b1f3a;
+    margin: 15px 0;
+}
+
+
+.section-header p {
+    color: #667085;
+    font-size: 18px;
+}
+
+
+
+.timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 70px auto;
+}
+
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    background: linear-gradient(
+        #0b1f3a,
+        #d4af37
+    );
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.timeline-item {
+    position: relative;
+    width: 50%;
+    padding: 25px;
+}
+
+
+.timeline-item:nth-child(odd) {
+    left: 0;
+}
+
+
+.timeline-item:nth-child(even) {
+    left: 50%;
+}
+
+
+
+.timeline-dot {
+    position: absolute;
+    top: 35px;
+    right: -25px;
+
+    width: 50px;
+    height: 50px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#0b1f3a;
+    color:white;
+
+    border:4px solid white;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+    font-size:22px;
+}
+
+
+.timeline-item:nth-child(even) .timeline-dot {
+    left:-25px;
+}
+
+
+
+.timeline-card {
+
+    background:rgba(255,255,255,.75);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:20px;
+
+    padding:30px;
+
+    box-shadow:
+    0 20px 50px rgba(11,31,58,.10);
+
+    border:1px solid rgba(11,31,58,.08);
+
+    transition:.4s ease;
+
+}
+
+
+.timeline-card:hover {
+
+    transform:translateY(-8px);
+
+    box-shadow:
+    0 30px 60px rgba(11,31,58,.18);
+
+}
+
+.date {
+
+    color:#d4af37;
+
+    font-weight:700;
+
+    font-size:14px;
+
+}
+.timeline-card h3 {
+
+    color:#0b1f3a;
+
+    font-size:22px;
+
+    margin:15px 0;
+}
+
+.timeline-card p {
+
+    color:#555;
+
+    line-height:1.7;
+}
+@media(max-width:768px){
+
+.timeline::before{
+    left:20px;
+}
+
+
+.timeline-item,
+.timeline-item:nth-child(even){
+    width:100%;
+    left:0;
+    padding-left:60px;
+}
+
+
+.timeline-dot,
+.timeline-item:nth-child(even) .timeline-dot{
+
+    left:-5px;
+    right:auto;
+
+}
+
+.section-header h2{
+    font-size:32px;
+}
+
+}
+
 </style>
 </head>
 
@@ -457,31 +645,31 @@ nav ul li a.active{
   <div class="glass-card">
     <h1>Qui suis-je ?</h1>
     <p>
-      « Hello, je suis Shaw-Herby ! 👋 »
+     Qui suis-je ?
 
-Développeur Web & Technicien Support IT, je suis titulaire d’un Certificat de fin d’études du premier cycle universitaire en Sciences Informatiques délivré par l’Université INUKA, un diplôme officiel qui atteste solidement de mes compétences techniques et de mon parcours académique.
+« Hello, je suis Shaw-Herby ! 👋 »
 
-Passionné par l’informatique, je conçois des applications web dynamiques et performantes, tout en structurant des bases de données robustes et optimisées avec MySQL et Oracle 19c. Parallèlement, je développe des API REST sécurisées et scalables avec PHP et Laravel, rigoureusement testées à l’aide de Postman, afin de garantir fiabilité et performance.
+Développeur Web & Technicien Support IT, diplômé en Sciences Informatiques de l’Université INUKA, je suis passionné par la conception de solutions numériques performantes, la gestion des données et les infrastructures informatiques.
 
-Ainsi, mon profil se situe à l’intersection du développement logiciel et du support informatique. D’une part, je m’occupe de la conception et de l’évolution de solutions web modernes ; d’autre part, j’assure la gestion des données ainsi que la qualité des échanges entre les systèmes grâce aux API.
+Je développe des applications web modernes avec PHP, Laravel, JavaScript et Bootstrap, en intégrant des bases de données MySQL et Oracle 19c ainsi que des API REST testées avec Postman.
 
-En outre, j’interviens activement dans le domaine du support IT, notamment à travers l’assistance aux utilisateurs, l’installation et la configuration de systèmes Windows, le déploiement de logiciels tels que Microsoft Office et autres applications métiers, ainsi que la gestion et la configuration d’imprimantes et de périphériques.
+Lors de mon stage à l’Administration Générale des Douanes (AGD), j’ai renforcé mes compétences en développement web, intégration et gestion de bases de données, support technique, maintenance informatique et administration réseau (configuration de routeurs, raccordement réseau et dépannage).
 
-Par ailleurs, j’ai développé une solide expérience dans l’administration et la sécurisation des environnements techniques, incluant la configuration de postes et la gestion de réseaux professionnels, garantissant ainsi la continuité et la stabilité des services.
+J’ai également effectué un stage chez LJTechHub, où j’ai développé mon expérience en support informatique, maintenance matérielle et logicielle, outils numériques et solutions basées sur l’intelligence artificielle (IA).
 
-Enfin, rigoureux, curieux et passionné, j’aime relever de nouveaux défis techniques et transformer des idées en solutions concrètes, fiables et efficaces. N’hésitez donc pas à me contacter pour collaborer sur vos projets numériques.
+Polyvalent, curieux et orienté solutions, je combine développement logiciel, gestion des systèmes informatiques et accompagnement numérique pour créer des solutions fiables, efficaces et adaptées aux besoins des organisations.
     </p>
   </div>
 </section>
 
 <section class="stats">
   <div class="stat">
-    <h2>3+</h2>
+    <h2>5+</h2>
     <p>Projets personnel réalisés</p>
   </div>
   <div class="stat">
     <h2>1+</h2>
-    <p>Années d'expérience</p>
+    <p>Année d'expérience</p>
   </div>
   <div class="stat">
     <h2>11+</h2>
@@ -509,11 +697,92 @@ Enfin, rigoureux, curieux et passionné, j’aime relever de nouveaux défis tec
   </div>
 </section>
 
-<section class="timeline">
-  <h2>Parcours</h2>
-  <div class="item">🎓 Étudiant en Sciences Informatiques – Université Inuka</div>
-  <div class="item">💼 Stage en développement web et réseau</div>
-  <div class="item">⚙️ Création d’API REST et applications web professionnelles</div>
+<section class="timeline-section" id="parcours">
+    <div class="container">
+
+        <div class="section-header">
+            <span>EXPÉRIENCE</span>
+            <h2>Mon parcours professionnel</h2>
+            <p>
+                Une évolution construite autour du développement web,
+                du support informatique et des solutions numériques.
+            </p>
+        </div>
+
+
+        <div class="timeline">
+
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot">🎓</div>
+
+                <div class="timeline-card">
+                    <span class="date">2015 - 2019</span>
+                    <h3>Sciences Informatiques — Université INUKA</h3>
+
+                    <p>
+                        Formation universitaire en informatique avec une orientation
+                        vers le développement logiciel, les bases de données,
+                        les systèmes informatiques et les technologies numériques.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot">🏛️</div>
+
+                <div class="timeline-card">
+                    <span class="date">Expérience professionnelle</span>
+                    <h3>Administration Générale des Douanes (AGD)</h3>
+
+                    <p>
+                        Stage en informatique axé sur le développement web,
+                        l'intégration et la gestion des bases de données
+                        <strong>MySQL & Oracle 19c</strong>, le support technique,
+                        la maintenance informatique et l'administration réseau
+                        (routeurs, câblage réseau TP/RJ45 et dépannage).
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot">💻</div>
+
+                <div class="timeline-card">
+                    <span class="date">Expérience pratique</span>
+                    <h3>LJTechHub — Support IT & Technologies numériques</h3>
+
+                    <p>
+                        Stage pratique en maintenance informatique, assistance
+                        utilisateurs, installation de logiciels, support technique,
+                        développement web et découverte des outils numériques
+                        intégrant l'intelligence artificielle.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-dot">⚙️</div>
+
+                <div class="timeline-card">
+                    <span class="date">Aujourd’hui</span>
+                    <h3>Développeur Web & Solutions Digitales</h3>
+
+                    <p>
+                        Création d'applications web modernes avec
+                        <strong>PHP, Laravel, JavaScript et Bootstrap</strong>,
+                        conception d'API REST, gestion des données et développement
+                        de solutions numériques performantes adaptées aux besoins
+                        des entreprises.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </section>
 
 <script>
