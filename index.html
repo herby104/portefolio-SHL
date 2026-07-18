@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shaw-Herby LOUIS | Développeur Full Stack</title>
+<title>S.Herby LOUIS | Développeur Full Stack</title>
 <meta name="description" content="Portfolio professionnel de Shaw-Herby Louis - Développeur Full Stack, API REST, Réseaux et Bases de Données">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,7 @@
   --primary:#4f46e5;
   --primary-d:#3730a3;
   --cyan:#06b6d4;
-  --text:#0f172a;
+  --text:#1e293b;;
   --muted:#64748b;
   --font-disp:'Space Grotesk',sans-serif;
   --font-body:'Inter',sans-serif;
@@ -65,7 +65,7 @@ section{position:relative;z-index:2}
 }
 .header .container{
   display:flex;align-items:center;justify-content:space-between;
-  height:78px;gap:24px;
+  height:128px;gap:24px;
 }
 
 .logo{
@@ -73,12 +73,15 @@ section{position:relative;z-index:2}
   align-items:center;
   justify-content:flex-start;
   flex-shrink:0;
+  color: #D4A017;
+  mix-blend-mode: multiply;
 }
 .logo img{
   display:block;
-  height:54px;
+  height:104px;
   width:auto;
   max-width:100%;
+
   object-fit:contain;
 }
 nav{flex:1;display:flex;justify-content:center}
@@ -478,7 +481,11 @@ footer ul li a:hover{
 <header class="header" id="header">
   <div class="container">
     <a href="index.html" class="logo">
-      <img src="images/shl.jpg" alt="Logo SH L">
+      <img src="images/shl.jpg" alt="Logo SH L" class="brand-logo">
+          <div class="brand-info">
+        <span class="brand-text">SHL</span>
+        <span class="brand-sub">SOLUTION DIGITAL</span>
+    </div>
     </a>
     <nav class="navbar">
       <ul>
@@ -502,7 +509,7 @@ footer ul li a:hover{
   <div class="container hero-grid">
     <div class="hero-content">
       <div class="badge reveal"><span class="pulse"></span> Disponible pour freelance &amp; emploi</div>
-      <h1 class="reveal">Shaw-Herby <span>LOUIS</span></h1>
+      <h1 class="reveal">S.Herby <span>LOUIS</span></h1>
       <div class="terminal-line reveal"><span id="typed-text"></span><span class="cursor"></span></div>
       <p class="reveal">Développeur Web & Technicien Support IT polyvalent, je suis spécialisé dans la conception d'applications robustes (PHP, API REST, Postman) et la gestion de bases de données (Oracle 19c, MySQL). J'assure le support technique ainsi que le déploiement et la maintenance de sites web professionnels (WordPress, cPanel). En parallèle, j'administre des infrastructures réseau, notamment à travers la configuration d'environnements Windows Server et le déploiement de systèmes Linux via VirtualBox.</p>
       <div class="hero-buttons reveal">
@@ -572,7 +579,7 @@ footer ul li a:hover{
     <div class="cards-grid">
       <div class="card reveal"><i class="fas fa-code"></i><h3>Développement Web</h3><p>Conception de sites web modernes, rapides, sécurisés et responsive, basés sur des architectures de code propres, optimisées et maintenables..</p></div>
       <div class="card reveal"><i class="fas fa-server"></i><h3>API REST</h3><p>Développement d’API REST performantes et évolutives avec PHP / Laravel, intégrant des standards de sécurité et une documentation technique complète.</p></div>
-      <div class="card reveal"><i class="fas fa-network-wired"></i><h3>Réseaux & IT</h3><p>upport technique aux utilisateurs (helpdesk), incluant l’installation et la configuration de systèmes Windows, le déploiement d’applications (Microsoft Office et logiciels métiers), ainsi que la configuration d’imprimantes et périphériques</p></div>
+      <div class="card reveal"><i class="fas fa-network-wired"></i><h3>Réseaux & IT</h3><p>Support technique aux utilisateurs (helpdesk), incluant l’installation et la configuration de systèmes Windows, le déploiement d’applications (Microsoft Office et logiciels métiers), ainsi que la configuration d’imprimantes et périphériques</p></div>
     </div>
   </div>
 </section>
@@ -598,7 +605,7 @@ footer ul li a:hover{
           <span class="project-tag">HTML · CSS · JS</span>
           <h3>Portfolio Professionnel</h3>
           <p>Site personnel ultra-moderne avec animations avancées, design responsive et identité visuelle unique.</p>
-          <div class="project-links"><a href="https://herbypulsedev.gt.tc/?i=1">Visiter mon site</a><i class="fas fa-external-link-alt"></i> Live</a><a href="#"><i class="fab fa-github"></i> Code</a></div>
+          <div class="project-links"><a href="https://herbypulsedev.gt.tc/?i=1"><i class="fas fa-external-link-alt"></i> Live</a><a href="#"><i class="fab fa-github"></i> Code</a></div>
         </div>
       </div>
       <div class="project-card reveal">
