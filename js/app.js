@@ -1,520 +1,1582 @@
-/* =====================================
-   PORTFOLIO HERBY
-   APP.JS
-===================================== */
+/* ============================================================
+   SHL DIGITAL PORTFOLIO
+   Premium SaaS Interaction System
+   Version 2026
+   ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    initNavbar();
-    initMobileMenu();
-    initCounters();
-    initReveal();
-    initTiltCards();
-    initParallax();
-    initSmoothScroll();
+    "use strict";
 
-});
 
-/* =====================================
-   HEADER SCROLL
-===================================== */
+    /* ============================================================
+       01 — ELEMENTS
+       ============================================================ */
 
-function initNavbar(){
+    const body = document.body;
 
     const header =
-    document.querySelector(".header");
-
-    window.addEventListener("scroll", () => {
-
-        if(window.scrollY > 50){
-
-            header.classList.add("scrolled");
-
-        }else{
-
-            header.classList.remove("scrolled");
-
-        }
-
-    });
-
-}
-
-/* =====================================
-   MENU MOBILE
-===================================== */
-
-function initMobileMenu(){
-
-    const menuBtn =
-    document.getElementById("menu-btn");
+        document.getElementById("header");
 
     const navbar =
-    document.querySelector(".navbar");
+        document.getElementById("navbar");
 
-    if(!menuBtn || !navbar) return;
+    const menuToggle =
+        document.getElementById("menuToggle");
 
-    menuBtn.addEventListener("click", () => {
+    const scrollProgress =
+        document.getElementById("scrollProgress");
 
-        navbar.classList.toggle("mobile-open");
+    const cursorGlow =
+        document.getElementById("cursorGlow");
 
-        if(navbar.classList.contains("mobile-open")){
+    const currentYear =
+        document.getElementById("currentYear");
 
-            menuBtn.innerHTML =
-            '<i class="fa-solid fa-xmark"></i>';
 
-        }else{
+    /* ============================================================
+       02 — REDUCED MOTION
+       ============================================================ */
 
-            menuBtn.innerHTML =
-            '<i class="fa-solid fa-bars"></i>';
+    const reducedMotionQuery =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        );
 
-        }
+    const reducedMotion =
+        reducedMotionQuery.matches;
 
-    });
 
-}
+    if (reducedMotion) {
 
-/* =====================================
-   ACTIVE NAVIGATION
-===================================== */
+        document.documentElement.classList.add(
+            "reduce-motion"
+        );
 
-const sections =
-document.querySelectorAll("section");
+    }
 
-const navLinks =
-document.querySelectorAll(".navbar a");
 
-window.addEventListener("scroll", () => {
+    /* ============================================================
+       03 — CURRENT PAGE
+       ============================================================ */
 
-    let current = "";
+    function normalizePage(path) {
 
-    sections.forEach(section => {
+        let page =
+            String(path || "")
+                .split("?")[0]
+                .split("#")[0]
+                .split("/")
+                .pop()
+                .toLowerCase();
 
-        const sectionTop =
-        section.offsetTop - 150;
+        if (
+            !page ||
+            page === ""
+        ) {
 
-        if(window.scrollY >= sectionTop){
-
-            current =
-            section.getAttribute("id");
-
-        }
-
-    });
-
-    navLinks.forEach(link => {
-
-        link.classList.remove("active");
-
-        if(
-            link.getAttribute("href")
-            .includes(current)
-        ){
-
-            link.classList.add("active");
+            page = "index.html";
 
         }
 
-    });
+        return page;
 
-});
+    }
 
-/* =====================================
-   COUNTER
-===================================== */
 
-function initCounters(){
+    const currentPage =
+        normalizePage(
+            window.location.pathname
+        );
 
-    const counters =
-    document.querySelectorAll(".counter");
 
-    counters.forEach(counter => {
+    /* ============================================================
+       04 — ACTIVE NAVIGATION
+       Compatible avec :
+       index.html
+       about.html
+       skills.html
+       projects.html
+       parcours.html
+       contact.html
+       cv.html
+       ============================================================ */
 
-        counter.innerText = "0";
+    function setActiveNavigation() {
 
-        const updateCounter = () => {
-
-            const target =
-            +counter.getAttribute(
-            "data-target"
+        const links =
+            document.querySelectorAll(
+                ".nav-link[data-page]"
             );
 
-            const c =
-            +counter.innerText;
 
-            const increment =
-            target / 100;
+        links.forEach(link => {
 
-            if(c < target){
-
-                counter.innerText =
-                `${Math.ceil(
-                    c + increment
-                )}`;
-
-                setTimeout(
-                updateCounter,
-                20
+            const target =
+                normalizePage(
+                    link.getAttribute(
+                        "data-page"
+                    )
                 );
 
-            }else{
 
-                counter.innerText =
-                target;
+            /*
+             * Gestion spéciale de la page d'accueil.
+             *
+             * "/" et "index.html"
+             * doivent être considérés
+             * comme la même page.
+             */
+
+            const isHome =
+                (
+                    currentPage === "index.html" &&
+                    target === "index.html"
+                );
+
+
+            const isActive =
+                isHome ||
+                target === currentPage;
+
+
+            link.classList.toggle(
+                "active",
+                isActive
+            );
+
+
+            if (isActive) {
+
+                link.setAttribute(
+                    "aria-current",
+                    "page"
+                );
+
+            } else {
+
+                link.removeAttribute(
+                    "aria-current"
+                );
 
             }
 
-        };
+        });
 
-        const observer =
-        new IntersectionObserver(
-        entries => {
+    }
 
-            entries.forEach(entry => {
 
-                if(entry.isIntersecting){
+    setActiveNavigation();
 
-                    updateCounter();
 
-                    observer.unobserve(
-                    entry.target
+    /* ============================================================
+       05 — MOBILE MENU
+       ============================================================ */
+
+    function closeMobileMenu() {
+
+        if (!navbar || !menuToggle) {
+            return;
+        }
+
+
+        navbar.classList.remove(
+            "open"
+        );
+
+        menuToggle.classList.remove(
+            "active"
+        );
+
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        menuToggle.setAttribute(
+            "aria-label",
+            "Ouvrir le menu"
+        );
+
+
+        body.classList.remove(
+            "menu-open"
+        );
+
+    }
+
+
+    function openMobileMenu() {
+
+        if (!navbar || !menuToggle) {
+            return;
+        }
+
+
+        navbar.classList.add(
+            "open"
+        );
+
+        menuToggle.classList.add(
+            "active"
+        );
+
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+        menuToggle.setAttribute(
+            "aria-label",
+            "Fermer le menu"
+        );
+
+
+        body.classList.add(
+            "menu-open"
+        );
+
+    }
+
+
+    if (
+        menuToggle &&
+        navbar
+    ) {
+
+        /*
+         * État initial
+         */
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        menuToggle.setAttribute(
+            "aria-label",
+            "Ouvrir le menu"
+        );
+
+
+        menuToggle.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+
+                const isOpen =
+                    navbar.classList.contains(
+                        "open"
+                    );
+
+
+                if (isOpen) {
+
+                    closeMobileMenu();
+
+                } else {
+
+                    openMobileMenu();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
+       06 — NAVIGATION LINKS
+       
+       IMPORTANT :
+       Aucun preventDefault().
+       
+       Le navigateur charge réellement :
+       about.html
+       skills.html
+       projects.html
+       etc.
+       ============================================================ */
+
+    document
+        .querySelectorAll(
+            "a[href]"
+        )
+        .forEach(link => {
+
+            link.addEventListener(
+                "click",
+                () => {
+
+                    /*
+                     * Fermeture immédiate
+                     * du menu mobile.
+                     */
+
+                    if (
+                        link.classList.contains(
+                            "nav-link"
+                        )
+                    ) {
+
+                        closeMobileMenu();
+
+                    }
+
+
+                    /*
+                     * Petite animation de sortie
+                     * sans bloquer la navigation.
+                     */
+
+                    const href =
+                        link.getAttribute(
+                            "href"
+                        );
+
+
+                    if (
+                        !href ||
+                        href.startsWith("#") ||
+                        href.startsWith("mailto:") ||
+                        href.startsWith("tel:") ||
+                        href.startsWith("javascript:")
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Uniquement pour les pages
+                     * internes du portfolio.
+                     */
+
+                    const isInternalPage =
+                        href.endsWith(".html") &&
+                        !href.startsWith("http");
+
+
+                    if (
+                        isInternalPage &&
+                        !reducedMotion
+                    ) {
+
+                        body.classList.add(
+                            "page-leaving"
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+
+    /* ============================================================
+       07 — ESCAPE
+       ============================================================ */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeMobileMenu();
+
+            }
+
+        }
+    );
+
+
+    /* ============================================================
+       08 — CLICK OUTSIDE MOBILE MENU
+       ============================================================ */
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            if (
+                !navbar ||
+                !menuToggle
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                !navbar.classList.contains(
+                    "open"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const clickedInsideNavbar =
+                navbar.contains(
+                    event.target
+                );
+
+
+            const clickedToggle =
+                menuToggle.contains(
+                    event.target
+                );
+
+
+            if (
+                !clickedInsideNavbar &&
+                !clickedToggle
+            ) {
+
+                closeMobileMenu();
+
+            }
+
+        }
+    );
+
+
+    /* ============================================================
+       09 — RESIZE
+       ============================================================ */
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            if (
+                window.innerWidth > 1050
+            ) {
+
+                closeMobileMenu();
+
+            }
+
+        }
+    );
+
+
+    /* ============================================================
+       10 — HEADER SCROLL
+       ============================================================ */
+
+    function updateHeader() {
+
+        if (!header) {
+            return;
+        }
+
+
+        const shouldScroll =
+            window.scrollY > 30;
+
+
+        header.classList.toggle(
+            "scrolled",
+            shouldScroll
+        );
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        updateHeader,
+        {
+            passive: true
+        }
+    );
+
+
+    updateHeader();
+
+
+    /* ============================================================
+       11 — SCROLL PROGRESS
+       ============================================================ */
+
+    function updateScrollProgress() {
+
+        if (!scrollProgress) {
+            return;
+        }
+
+
+        const documentHeight =
+            document.documentElement
+                .scrollHeight -
+            window.innerHeight;
+
+
+        if (
+            documentHeight <= 0
+        ) {
+
+            scrollProgress.style.width =
+                "0%";
+
+            return;
+
+        }
+
+
+        const progress =
+            (
+                window.scrollY /
+                documentHeight
+            ) * 100;
+
+
+        scrollProgress.style.width =
+            `${Math.min(
+                Math.max(progress, 0),
+                100
+            )}%`;
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        updateScrollProgress,
+        {
+            passive: true
+        }
+    );
+
+
+    window.addEventListener(
+        "resize",
+        updateScrollProgress,
+        {
+            passive: true
+        }
+    );
+
+
+    updateScrollProgress();
+
+
+    /* ============================================================
+       12 — REVEAL ANIMATIONS
+       
+       IMPORTANT :
+       Ton CSS utilise ".visible".
+       Le JS utilise donc ".visible"
+       et non ".revealed".
+       ============================================================ */
+
+    const revealElements =
+        document.querySelectorAll(
+            "[data-reveal], " +
+            ".reveal, " +
+            ".reveal-left, " +
+            ".reveal-right"
+        );
+
+
+    function revealElement(
+        element
+    ) {
+
+        element.classList.add(
+            "visible"
+        );
+
+    }
+
+
+    if (
+        reducedMotion ||
+        !("IntersectionObserver" in window)
+    ) {
+
+        revealElements.forEach(
+            revealElement
+        );
+
+    } else if (
+        revealElements.length
+    ) {
+
+        const revealObserver =
+            new IntersectionObserver(
+                entries => {
+
+                    entries.forEach(
+                        entry => {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                revealElement(
+                                    entry.target
+                                );
+
+
+                                revealObserver.unobserve(
+                                    entry.target
+                                );
+
+                            }
+
+                        }
+                    );
+
+                },
+                {
+                    threshold: 0.12,
+
+                    rootMargin:
+                        "0px 0px -50px 0px"
+                }
+            );
+
+
+        revealElements.forEach(
+            element => {
+
+                revealObserver.observe(
+                    element
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
+       13 — STAGGER CARDS
+       ============================================================ */
+
+    const staggerCards =
+        document.querySelectorAll(
+            ".stagger-card"
+        );
+
+
+    if (
+        reducedMotion
+    ) {
+
+        staggerCards.forEach(
+            card => {
+
+                card.classList.add(
+                    "visible"
+                );
+
+            }
+        );
+
+    } else if (
+        "IntersectionObserver" in window &&
+        staggerCards.length
+    ) {
+
+        const staggerObserver =
+            new IntersectionObserver(
+                entries => {
+
+                    entries.forEach(
+                        entry => {
+
+                            if (
+                                !entry.isIntersecting
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            const parent =
+                                entry.target.parentElement;
+
+
+                            const cards =
+                                parent
+                                    ? parent.querySelectorAll(
+                                        ".stagger-card"
+                                    )
+                                    : [];
+
+
+                            cards.forEach(
+                                (
+                                    card,
+                                    index
+                                ) => {
+
+                                    card.style.transitionDelay =
+                                        `${index * 80}ms`;
+
+
+                                    card.classList.add(
+                                        "visible"
+                                    );
+
+                                }
+                            );
+
+
+                            staggerObserver.unobserve(
+                                entry.target
+                            );
+
+                        }
+                    );
+
+                },
+                {
+                    threshold: 0.10,
+
+                    rootMargin:
+                        "0px 0px -40px 0px"
+                }
+            );
+
+
+        staggerCards.forEach(
+            card => {
+
+                staggerObserver.observe(
+                    card
+                );
+
+            }
+        );
+
+    } else {
+
+        staggerCards.forEach(
+            card => {
+
+                card.classList.add(
+                    "visible"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
+       14 — COUNTERS
+       ============================================================ */
+
+    const counters =
+        document.querySelectorAll(
+            "[data-counter]"
+        );
+
+
+    function animateCounter(
+        element
+    ) {
+
+        if (
+            element.dataset.animated === "true"
+        ) {
+
+            return;
+
+        }
+
+
+        element.dataset.animated =
+            "true";
+
+
+        const target =
+            Number(
+                element.dataset.counter
+            );
+
+
+        if (
+            !Number.isFinite(target)
+        ) {
+
+            return;
+
+        }
+
+
+        const suffix =
+            element.dataset.suffix || "";
+
+
+        const prefix =
+            element.dataset.prefix || "";
+
+
+        /*
+         * Pour les utilisateurs ayant
+         * activé "réduire les animations".
+         */
+
+        if (reducedMotion) {
+
+            element.textContent =
+                prefix +
+                target +
+                suffix;
+
+            return;
+
+        }
+
+
+        const duration =
+            1200;
+
+
+        const startTime =
+            performance.now();
+
+
+        function update(
+            currentTime
+        ) {
+
+            const elapsed =
+                currentTime -
+                startTime;
+
+
+            const progress =
+                Math.min(
+                    elapsed / duration,
+                    1
+                );
+
+
+            /*
+             * Ease-out cubic.
+             */
+
+            const eased =
+                1 -
+                Math.pow(
+                    1 - progress,
+                    3
+                );
+
+
+            const value =
+                Math.round(
+                    target * eased
+                );
+
+
+            element.textContent =
+                prefix +
+                value +
+                suffix;
+
+
+            if (
+                progress < 1
+            ) {
+
+                requestAnimationFrame(
+                    update
+                );
+
+            }
+
+        }
+
+
+        requestAnimationFrame(
+            update
+        );
+
+    }
+
+
+    if (
+        counters.length
+    ) {
+
+        if (
+            reducedMotion ||
+            !("IntersectionObserver" in window)
+        ) {
+
+            counters.forEach(
+                animateCounter
+            );
+
+        } else {
+
+            const counterObserver =
+                new IntersectionObserver(
+                    entries => {
+
+                        entries.forEach(
+                            entry => {
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+                                    animateCounter(
+                                        entry.target
+                                    );
+
+
+                                    counterObserver.unobserve(
+                                        entry.target
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    },
+                    {
+                        threshold: 0.5
+                    }
+                );
+
+
+            counters.forEach(
+                counter => {
+
+                    counterObserver.observe(
+                        counter
+                    );
+
+                }
+            );
+
+        }
+
+    }
+
+
+    /* ============================================================
+       15 — SKILL PROGRESS BARS
+       
+       Compatible avec :
+       --skill: 85%
+       
+       et le CSS :
+       transform: scaleX(0)
+       ============================================================ */
+
+    const skillProgressBars =
+        document.querySelectorAll(
+            ".skill-progress"
+        );
+
+
+    function animateSkill(
+        skill
+    ) {
+
+        const value =
+            skill.style.getPropertyValue(
+                "--skill"
+            );
+
+
+        if (
+            value
+        ) {
+
+            /*
+             * Le CSS utilise déjà
+             * width: var(--skill).
+             *
+             * On force simplement
+             * l'animation vers 100%.
+             */
+
+            skill.style.setProperty(
+                "--skill-target",
+                value
+            );
+
+            skill.classList.add(
+                "visible"
+            );
+
+        }
+
+    }
+
+
+    if (
+        skillProgressBars.length
+    ) {
+
+        if (
+            reducedMotion ||
+            !("IntersectionObserver" in window)
+        ) {
+
+            skillProgressBars.forEach(
+                animateSkill
+            );
+
+        } else {
+
+            const skillObserver =
+                new IntersectionObserver(
+                    entries => {
+
+                        entries.forEach(
+                            entry => {
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+                                    animateSkill(
+                                        entry.target
+                                    );
+
+
+                                    skillObserver.unobserve(
+                                        entry.target
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    },
+                    {
+                        threshold: 0.30
+                    }
+                );
+
+
+            skillProgressBars.forEach(
+                skill => {
+
+                    skillObserver.observe(
+                        skill
+                    );
+
+                }
+            );
+
+        }
+
+    }
+
+
+    /* ============================================================
+       16 — MAGNETIC ELEMENTS
+       ============================================================ */
+
+    const magneticElements =
+        document.querySelectorAll(
+            ".magnetic"
+        );
+
+
+    const finePointer =
+        window.matchMedia(
+            "(pointer: fine)"
+        ).matches;
+
+
+    if (
+        finePointer &&
+        !reducedMotion
+    ) {
+
+        magneticElements.forEach(
+            element => {
+
+                element.addEventListener(
+                    "mousemove",
+                    event => {
+
+                        const rect =
+                            element.getBoundingClientRect();
+
+
+                        const x =
+                            event.clientX -
+                            rect.left -
+                            rect.width / 2;
+
+
+                        const y =
+                            event.clientY -
+                            rect.top -
+                            rect.height / 2;
+
+
+                        const strength =
+                            0.08;
+
+
+                        element.style.transform =
+                            `translate(
+                                ${x * strength}px,
+                                ${y * strength}px
+                            )`;
+
+                    }
+                );
+
+
+                element.addEventListener(
+                    "mouseleave",
+                    () => {
+
+                        element.style.transform =
+                            "";
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
+       17 — CURSOR GLOW
+       ============================================================ */
+
+    if (
+        cursorGlow &&
+        finePointer &&
+        !reducedMotion
+    ) {
+
+        let cursorX = 0;
+        let cursorY = 0;
+
+        let glowX = 0;
+        let glowY = 0;
+
+
+        window.addEventListener(
+            "pointermove",
+            event => {
+
+                cursorX =
+                    event.clientX;
+
+                cursorY =
+                    event.clientY;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        function animateCursorGlow() {
+
+            glowX +=
+                (
+                    cursorX -
+                    glowX
+                ) * 0.12;
+
+
+            glowY +=
+                (
+                    cursorY -
+                    glowY
+                ) * 0.12;
+
+
+            cursorGlow.style.left =
+                `${glowX}px`;
+
+
+            cursorGlow.style.top =
+                `${glowY}px`;
+
+
+            requestAnimationFrame(
+                animateCursorGlow
+            );
+
+        }
+
+
+        animateCursorGlow();
+
+    }
+
+
+    /* ============================================================
+       18 — PROJECT CARD INTERACTION
+       ============================================================ */
+
+    const projectCards =
+        document.querySelectorAll(
+            ".project-card"
+        );
+
+
+    if (
+        finePointer &&
+        !reducedMotion
+    ) {
+
+        projectCards.forEach(
+            card => {
+
+                card.addEventListener(
+                    "mousemove",
+                    event => {
+
+                        const rect =
+                            card.getBoundingClientRect();
+
+
+                        const x =
+                            (
+                                event.clientX -
+                                rect.left
+                            ) /
+                            rect.width;
+
+
+                        const y =
+                            (
+                                event.clientY -
+                                rect.top
+                            ) /
+                            rect.height;
+
+
+                        const rotateX =
+                            (
+                                0.5 - y
+                            ) * 3;
+
+
+                        const rotateY =
+                            (
+                                x - 0.5
+                            ) * 3;
+
+
+                        card.style.transform =
+                            `
+                            translateY(-7px)
+                            perspective(900px)
+                            rotateX(${rotateX}deg)
+                            rotateY(${rotateY}deg)
+                            `;
+
+                    }
+                );
+
+
+                card.addEventListener(
+                    "mouseleave",
+                    () => {
+
+                        card.style.transform =
+                            "";
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
+       19 — CONTACT FORM
+       ============================================================ */
+
+    const contactForm =
+        document.getElementById(
+            "contactForm"
+        );
+
+
+    if (
+        contactForm
+    ) {
+
+        contactForm.addEventListener(
+            "submit",
+            () => {
+
+                body.classList.add(
+                    "form-submitting"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
+       20 — CURRENT YEAR
+       ============================================================ */
+
+    if (
+        currentYear
+    ) {
+
+        currentYear.textContent =
+            new Date().getFullYear();
+
+    }
+
+
+    /*
+     * Permet aussi d'utiliser :
+     *
+     * <span class="current-year"></span>
+     *
+     * sans ID.
+     */
+
+    document
+        .querySelectorAll(
+            ".current-year"
+        )
+        .forEach(
+            element => {
+
+                element.textContent =
+                    new Date().getFullYear();
+
+            }
+        );
+
+
+    /* ============================================================
+       21 — PAGE TRANSITION
+       ============================================================ */
+
+    window.addEventListener(
+        "pageshow",
+        () => {
+
+            body.classList.remove(
+                "page-leaving"
+            );
+
+            body.classList.remove(
+                "form-submitting"
+            );
+
+        }
+    );
+
+
+    /*
+     * Si une page utilise :
+     *
+     * <div class="page-transition"></div>
+     *
+     * on la fait disparaître après
+     * le chargement de la page.
+     */
+
+    const pageTransition =
+        document.querySelector(
+            ".page-transition"
+        );
+
+
+    if (
+        pageTransition
+    ) {
+
+        requestAnimationFrame(
+            () => {
+
+                pageTransition.classList.add(
+                    "loaded"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
+       22 — SMOOTH ANCHOR LINKS
+       
+       Les liens #section restent fonctionnels
+       à l'intérieur d'une même page.
+       ============================================================ */
+
+    document
+        .querySelectorAll(
+            'a[href^="#"]'
+        )
+        .forEach(
+            link => {
+
+                link.addEventListener(
+                    "click",
+                    event => {
+
+                        const targetId =
+                            link.getAttribute(
+                                "href"
+                            );
+
+
+                        if (
+                            !targetId ||
+                            targetId === "#"
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const target =
+                            document.querySelector(
+                                targetId
+                            );
+
+
+                        if (
+                            !target
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        event.preventDefault();
+
+
+                        const headerHeight =
+                            header
+                                ? header.offsetHeight
+                                : 0;
+
+
+                        const targetPosition =
+                            target.getBoundingClientRect()
+                                .top +
+                            window.scrollY -
+                            headerHeight -
+                            20;
+
+
+                        window.scrollTo(
+                            {
+                                top:
+                                    Math.max(
+                                        targetPosition,
+                                        0
+                                    ),
+
+                                behavior:
+                                    reducedMotion
+                                        ? "auto"
+                                        : "smooth"
+                            }
+                        );
+
+
+                        closeMobileMenu();
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* ============================================================
+       23 — LAZY IMAGE SUPPORT
+       ============================================================ */
+
+    const images =
+        document.querySelectorAll(
+            "img[data-src]"
+        );
+
+
+    if (
+        images.length
+    ) {
+
+        images.forEach(
+            image => {
+
+                const source =
+                    image.getAttribute(
+                        "data-src"
+                    );
+
+
+                if (
+                    source
+                ) {
+
+                    image.setAttribute(
+                        "src",
+                        source
+                    );
+
+                    image.removeAttribute(
+                        "data-src"
                     );
 
                 }
 
-            });
-
-        });
-
-        observer.observe(counter);
-
-    });
-
-}
-
-/* =====================================
-   REVEAL ANIMATION
-===================================== */
-
-function initReveal(){
-
-    const elements =
-    document.querySelectorAll(
-    ".card,.project-card,.stat-card,.timeline-item"
-    );
-
-    const observer =
-    new IntersectionObserver(
-
-    entries => {
-
-        entries.forEach(entry => {
-
-            if(entry.isIntersecting){
-
-                entry.target.classList.add(
-                "show"
-                );
-
             }
-
-        });
-
-    },
-
-    {
-        threshold:0.2
-    }
-
-    );
-
-    elements.forEach(el => {
-
-        el.classList.add(
-        "hidden-element"
-        );
-
-        observer.observe(el);
-
-    });
-
-}
-
-/* =====================================
-   3D HOVER CARDS
-===================================== */
-
-function initTiltCards(){
-
-    const cards =
-    document.querySelectorAll(
-    ".card,.project-card,.skill-card"
-    );
-
-    cards.forEach(card => {
-
-        card.addEventListener(
-        "mousemove",
-        e => {
-
-            const rect =
-            card.getBoundingClientRect();
-
-            const x =
-            e.clientX - rect.left;
-
-            const y =
-            e.clientY - rect.top;
-
-            const centerX =
-            rect.width / 2;
-
-            const centerY =
-            rect.height / 2;
-
-            const rotateX =
-            ((y - centerY)/12);
-
-            const rotateY =
-            ((centerX - x)/12);
-
-            card.style.transform =
-
-            `perspective(1000px)
-             rotateX(${rotateX}deg)
-             rotateY(${rotateY}deg)
-             translateY(-10px)`;
-
-        });
-
-        card.addEventListener(
-        "mouseleave",
-        () => {
-
-            card.style.transform =
-            "perspective(1000px) rotateX(0) rotateY(0)";
-
-        });
-
-    });
-
-}
-
-/* =====================================
-   HERO PARALLAX
-===================================== */
-
-function initParallax(){
-
-    const heroImage =
-    document.querySelector(
-    ".hero-image"
-    );
-
-    if(!heroImage) return;
-
-    window.addEventListener(
-    "mousemove",
-    e => {
-
-        let x =
-        (window.innerWidth / 2
-        - e.pageX) / 50;
-
-        let y =
-        (window.innerHeight / 2
-        - e.pageY) / 50;
-
-        heroImage.style.transform =
-
-        `translateX(${x}px)
-         translateY(${y}px)`;
-
-    });
-
-}
-
-/* =====================================
-   SMOOTH SCROLL
-===================================== */
-
-function initSmoothScroll(){
-
-    document
-    .querySelectorAll('a[href^="#"]')
-    .forEach(anchor => {
-
-        anchor.addEventListener(
-        "click",
-        function(e){
-
-            e.preventDefault();
-
-            const target =
-            document.querySelector(
-            this.getAttribute("href")
-            );
-
-            if(target){
-
-                window.scrollTo({
-
-                    top:
-                    target.offsetTop - 80,
-
-                    behavior:
-                    "smooth"
-
-                });
-
-            }
-
-        });
-
-    });
-
-}
-
-/* =====================================
-   HERO TEXT ANIMATION
-===================================== */
-
-window.addEventListener(
-"load",
-() => {
-
-    const heroTitle =
-    document.querySelector(
-    ".hero h1"
-    );
-
-    if(heroTitle){
-
-        heroTitle.animate([
-
-        {
-            opacity:0,
-            transform:
-            "translateY(50px)"
-        },
-
-        {
-            opacity:1,
-            transform:
-            "translateY(0)"
-        }
-
-        ],
-
-        {
-            duration:1200,
-            easing:
-            "ease-out"
-        });
-
-    }
-
-});
-
-/* =====================================
-   PRELOADER
-===================================== */
-
-window.addEventListener(
-"load",
-() => {
-
-    const loader =
-    document.querySelector(
-    ".preloader"
-    );
-
-    if(loader){
-
-        setTimeout(() => {
-
-            loader.classList.add(
-            "hide"
-            );
-
-        },800);
-
-    }
-
-});
-
-/* =====================================
-   BACK TO TOP
-===================================== */
-
-const topBtn =
-document.querySelector(
-".back-to-top"
-);
-
-window.addEventListener(
-"scroll",
-() => {
-
-    if(!topBtn) return;
-
-    if(window.scrollY > 400){
-
-        topBtn.classList.add(
-        "show-top"
-        );
-
-    }else{
-
-        topBtn.classList.remove(
-        "show-top"
         );
 
     }
 
+
+    /* ============================================================
+       24 — INITIALIZATION COMPLETE
+       ============================================================ */
+
+    body.classList.add(
+        "js-ready"
+    );
+
+
 });
-
-if(topBtn){
-
-    topBtn.addEventListener(
-    "click",
-    () => {
-
-        window.scrollTo({
-
-            top:0,
-            behavior:"smooth"
-
-        });
-
-    });
-
-}
-
-// Scroll effect header
-window.addEventListener("scroll", () => {
-  const header = document.getElementById("header");
-
-  if(window.scrollY > 50){
-    header.style.background = "#071739";
-  } else {
-    header.style.background = "#071739";
-  }
-});
-
-
-/* =====================================
-   CURRENT YEAR FOOTER
-===================================== */
-
-const year =
-document.getElementById(
-"currentYear"
-);
-
-if(year){
-
-    year.textContent =
-    new Date().getFullYear();
-
-}
